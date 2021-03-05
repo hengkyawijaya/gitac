@@ -2,21 +2,15 @@
 Gitac is nodejs based CLI that will be help you to create github release instanly. This feature will be very helpful when combined with github action for the runner. 
 
 ### How To Install
-Clone the repo
+Install gitac globally
 ```
-git clone git@github.com:hengkyawijaya/gitac.git
+npm install -g gitac
 ```
-Install the dependency inside root directory
+Define Env Variable on your machines, replace below data to your actual config
 ```
-npm install
-```
-Copy env sample with command bellow, then configure the env variable depends on your needs
-```
-cp .env.sample .env
-```
-Execute npm link to connect script to the bin
-```
-npm link
+GITAC_OWNER=hengkyawijaya
+GITAC_REPO=gitac
+GITAC_GITHUB_TOKEN=xxxx
 ```
 Try some command
 ```
