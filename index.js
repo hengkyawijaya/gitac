@@ -5,20 +5,29 @@ const yargs = require("yargs/yargs")
 const hideBin = require("yargs/helpers").hideBin
 require("dotenv").config()
 
-const prefix = process.env.PREFIX
-const postfix = process.env.POSTFIX
-const service = process.env.SERVICE
 const releaseType = "patch"
 const patternRelease = /(?<prefix>[a-zA-Z]+)?(?<major>\d+)(\.)(?<minor>\d+)(\.)(?<patch>\d+)?(?<postfix>[a-zA-Z]+)?/g
 const patternGithubRef = /(refs\/pull\/)(?<prnum>\d+)(\/merge)$/g
-const owner = process.env.OWNER
-const repo = process.env.REPO
-const githubToken = process.env.GITHUB_TOKEN
+const owner = process.env.GITAC_OWNER
+const repo = process.env.GITAC_REPO
+const githubToken = process.env.GITAC_GITHUB_TOKEN
 const octokit = new Octokit({ auth: githubToken });
 
 const argv = yargs(hideBin(process.argv)).command('release', 'generate draft release tag')
     .option('github-ref', {
         description: 'PR merge branch refs/pull/:prNumber/merge',
+        type: 'string',
+    })
+    .option('service', {
+        description: 'service name matched with label on github repo',
+        type: 'string',
+    })
+    .option('prefix', {
+        description: 'group of charater before the version <prefix>0.0.0',
+        type: 'string',
+    })
+    .option('postfix', {
+        description: 'group of charater after the version 0.0.0<postfix>',
         type: 'string',
     })
     .help()
@@ -31,6 +40,15 @@ async function createRelease() {
         return
     }
 
+    const service = argv['service']
+    if (service == ""){
+        console.log("service name is required")
+        return
+    }
+
+    const prefix = argv['prefix']
+    const postfix = argv['postfix']
+   
     try {
         var prnum = result.groups.prnum  
         response = await octokit.request(`GET /repos/${owner}/${repo}/pulls/${prnum}`, {

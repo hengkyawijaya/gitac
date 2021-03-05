@@ -32,6 +32,9 @@ Commands:
 Options:
   --version     Show version number                                    [boolean]
   --github-ref  PR merge branch refs/pull/:prNumber/merge               [string]
+  --service     service name matched with label on github repo          [string]
+  --prefix      group of charater before the version <prefix>0.0.0      [string]
+  --postfix     group of charater after the version 0.0.0<postfix>      [string]
   --help        Show help                                              [boolean]
 ```
 
